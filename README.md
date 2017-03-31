@@ -118,5 +118,6 @@ git commit
 y el push
 
 ```
+<<<<<<< HEAD
 git push
 `Rama principal``
