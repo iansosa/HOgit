@@ -118,5 +118,4 @@ git commit
 y el push
 
 ```
-git push
-```
+git p
