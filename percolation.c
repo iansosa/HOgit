@@ -19,13 +19,11 @@ int   percola(int *red,int n);
 int  main()
 {
 		
-	int i;
 	int per;
 	int n;
 	int *red;
 	float prob;
 	int *clase;
-	int m;
 	n=30;
 	red=(int *)malloc(n*n*sizeof(int));
 	clase=(int *)malloc(n*n*sizeof(int));
@@ -255,14 +253,15 @@ void  corregir_etiqueta(int *red,int *clase,int n)
 }
 
 
-void imprimir(int *red,int *clase,int n){
+void imprimir(int *red,int *clase,int n){    //print del vector clase comentado
 
-	int i,j,k,l;
+	int i,j;
+	//int k,l,b;
         int array[n][n];
-	int arrayclase[n][n];
-	int m,b;
+	//int arrayclase[n][n];
+	int m;
 	m=0;
-	b=0;
+	//b=0;
 	for(j=0;j<n;j++) 
 	{
         	for(i=0;i<n;i++)
