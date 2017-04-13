@@ -17,11 +17,11 @@ float average(float *pc,int z);
 
 int  main()
 {
-	//int per;
-	int n, i, j, m, z;
+	float per;
+	int n, i, j, m, z, l;
 	int *red;
-	float *pc;
-	float prob, d;
+	float *perproba;
+	float prob;
 	int *clase;
 	n=30;
 	m=0;
@@ -29,10 +29,14 @@ int  main()
 	red=(int *)malloc(n*n*sizeof(int));
 	clase=(int *)malloc(n*n*sizeof(int));
 
-	printf("How many iterations?   ");
+
+	printf("How many iterations level 1?   ");
+	scanf("%d", &l);
+	printf("How many iterations level 2?   ");
 	scanf("%d", &z);
 	float array[z];
-	pc=(float *)malloc(z*sizeof(float));
+	perproba=(float *)malloc(z*sizeof(int));
+	
 
 
 	//printf("Enter proba:   ");
@@ -41,36 +45,28 @@ int  main()
 		for(j = 0;j < z; j++)
 		{
 
-		prob=0.5;
-		d=2.0;
-		
+		prob=0.6;
+		per=0.0;
+				
 		srand(time(NULL) + j);
 
-			for(i = 0;i < 40; i++)
+			for(i = 0;i < l; i++)
 			{
 
 			llenar(red,n,prob);
 			hoshen(red,clase,n);
-			d=2.0*d;
-    		//imprimir(red,clase,n);
-    			if (percola(red,n))
-    			{ 
-             	prob+=(-1.0/d);
-             	} 
-            	else
-            	{
-            	prob+=(1.0/d);
-            	}
-    		//per=percola(red,n);
+			//imprimir(red,clase,n);
+    		
+    		per=per+percola(red,n);
 			//printf("%d\n%g\n",per,prob);
-			
 			}
-		pc[j]=prob;
-		array[j] = pc[m++];
+
+		perproba[j]=per/l;
+		array[j] = perproba[m++];
         printf("%g\n" , array[j]);
 		}
 	
-	printf("\n%g\n" , average(pc,z));
+	printf("\n%g\n" , average(perproba,z));
 
   free(red);
 
@@ -315,5 +311,6 @@ void imprimir(int *red,int *clase,int n){    //print del vector clase comentado
         printf("\n");
 	}*/
 }
+
 
 
