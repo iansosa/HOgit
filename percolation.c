@@ -12,28 +12,33 @@ void  corregir_etiqueta(int *red,int *clase,int n);
 int   actualizar(int *red,int *clase,int s,int frag);
 int   hoshen(int *red,int *clase,int n);
 int   percola(int *red,int n);
+float average(float *pc,int z);
 
 
 int  main()
 {
-	int per;
-	int n, i, j, m;
+	//int per;
+	int n, i, j, m, z;
 	int *red;
 	float *pc;
 	float prob, d;
 	int *clase;
-	float array[6];
 	n=30;
 	m=0;
+	
 	red=(int *)malloc(n*n*sizeof(int));
 	clase=(int *)malloc(n*n*sizeof(int));
-	pc=(float *)malloc(6*sizeof(float));
+
+	printf("How many iterations?   ");
+	scanf("%d", &z);
+	float array[z];
+	pc=(float *)malloc(z*sizeof(float));
 
 
 	//printf("Enter proba:   ");
 	//scanf("%g", &prob);
 	
-		for(j = 0;j < 6; j++)
+		for(j = 0;j < z; j++)
 		{
 
 		prob=0.5;
@@ -41,7 +46,7 @@ int  main()
 		
 		srand(time(NULL) + j);
 
-			for(i = 0;i < 20; i++)
+			for(i = 0;i < 40; i++)
 			{
 
 			llenar(red,n,prob);
@@ -56,7 +61,7 @@ int  main()
             	{
             	prob+=(1.0/d);
             	}
-    		per=percola(red,n);
+    		//per=percola(red,n);
 			//printf("%d\n%g\n",per,prob);
 			
 			}
@@ -65,7 +70,7 @@ int  main()
         printf("%g\n" , array[j]);
 		}
 	
-	
+	printf("\n%g\n" , average(pc,z));
 
   free(red);
 
@@ -278,6 +283,17 @@ void  corregir_etiqueta(int *red,int *clase,int n)
 	}
 }
 
+float average(float *pc,int z)
+{
+	int i;
+	float avg;
+	avg=0;
+	for(i=0;i<z;i++)
+	{
+		avg=avg+pc[i];
+	}
+return(avg/z);
+}
 
 void imprimir(int *red,int *clase,int n){    //print del vector clase comentado
 
