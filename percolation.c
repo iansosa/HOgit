@@ -2,10 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <unistd.h>
 
-#define P     16             // 1/2^P, P=16
-#define Z     27000          // iteraciones
-#define N     30             // lado de la red simulada
 
 void  llenar(int *red,int n,float prob);
 void  imprimir(int *red,int *clase,int n);
@@ -18,26 +16,55 @@ int   percola(int *red,int n);
 
 int  main()
 {
-		
 	int per;
-	int n;
+	int n, i, j, m;
 	int *red;
-	float prob;
+	float *pc;
+	float prob, d;
 	int *clase;
+	float array[6];
 	n=30;
+	m=0;
 	red=(int *)malloc(n*n*sizeof(int));
 	clase=(int *)malloc(n*n*sizeof(int));
+	pc=(float *)malloc(6*sizeof(float));
 
 
-	printf("Enter proba:   ");
-	scanf("%g", &prob);
+	//printf("Enter proba:   ");
+	//scanf("%g", &prob);
 	
+		for(j = 0;j < 6; j++)
+		{
+
+		prob=0.5;
+		d=2.0;
 		
-	llenar(red,n,prob);
-	hoshen(red,clase,n);
-        imprimir(red,clase,n);
-	per=percola(red,n);
-	printf("%d\n",per);
+		srand(time(NULL) + j);
+
+			for(i = 0;i < 20; i++)
+			{
+
+			llenar(red,n,prob);
+			hoshen(red,clase,n);
+			d=2.0*d;
+    		//imprimir(red,clase,n);
+    			if (percola(red,n))
+    			{ 
+             	prob+=(-1.0/d);
+             	} 
+            	else
+            	{
+            	prob+=(1.0/d);
+            	}
+    		per=percola(red,n);
+			//printf("%d\n%g\n",per,prob);
+			
+			}
+		pc[j]=prob;
+		array[j] = pc[m++];
+        printf("%g\n" , array[j]);
+		}
+	
 	
 
   free(red);
@@ -53,7 +80,6 @@ void  llenar(int *red,int n,float prob){
 	float c;
 
 	c = prob * 1000;
-	srand(time(NULL));
 	
 
 	for(i = 0; i < n*n; i++){
