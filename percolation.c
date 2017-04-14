@@ -43,9 +43,12 @@ int  main()
 
 		prob=0.5;
 		d=2.0;
+		FILE *fp;
+
+		fp = fopen("Probabilidades p convergientes.txt", "a");
 		
 		srand(time(NULL) + j);
-
+ 
 			for(i = 0;i < 40; i++)
 			{
 
@@ -67,7 +70,7 @@ int  main()
 			}
 		pc[j]=prob;
 		array[j] = pc[m++];
-        printf("%g\n" , array[j]);
+        fprintf(fp, "%f\n", array[j]);
 		}
 	
 	printf("\n%g\n" , average(pc,z));

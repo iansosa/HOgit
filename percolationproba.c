@@ -11,24 +11,26 @@ void  etiqueta_falsa(int *red,int *clase,int s1,int s2,int frag);
 void  corregir_etiqueta(int *red,int *clase,int n);
 int   actualizar(int *red,int *clase,int s,int frag);
 int   hoshen(int *red,int *clase,int n);
-int   percola(int *red,int n);
+int   percola(int *red,float *mass,int n, int s, int i,int l);
 float average(float *pc,int z);
 
 
 int  main()
 {
 	float per;
-	int n, i, j, z, l, k, h, b, d, r;
+	int n, i, j, z, l, k, h, b, d, r, s, y;
 	int *red;
-	float *perproba, *perprobap, *pc, q;
+	float *perproba, *perprobap, *masa, *masap, *pc, q, *mass;
 	float prob, c;
 	int *clase;
+	y=0;
 	n=30;
 	b=0;
 	q=2.0;
 	
 	red=(int *)malloc(n*n*sizeof(int));
 	clase=(int *)malloc(n*n*sizeof(int));
+	
 
 
 	printf("How many iterations lvl 1?(#matrixes)   ");
@@ -37,15 +39,23 @@ int  main()
 	scanf("%d", &z);
 	printf("Want to converge on pp=0.5?(1 for yes)   ");
 	scanf(" %d", &d);
+	mass=(float *)malloc(l*sizeof(float));
+		
 	if(d!=1)
 	{
+		
+		printf("Want to get pdensity?(1 for yes)   ");
+		scanf(" %d", &s);
 		printf("What's the resolution of p?   ");
 		scanf("%g", &c);
 		perproba=(float *)malloc(z*sizeof(float));
+		masa=(float *)malloc(z*sizeof(float));
 		prob=0;
 		h=ceil(1.0/c);
 		perprobap=(float *)malloc(h*sizeof(float));
+		masap=(float *)malloc(h*sizeof(float));
 		float arrayp[h];
+		float arraymp[h];
 		//printf("Enter proba:   ");
 		//scanf("%g", &prob);
 		FILE *fp;
@@ -71,18 +81,31 @@ int  main()
 						hoshen(red,clase,n);
 						//imprimir(red,clase,n);
     		
-    					per=per+percola(red,n);
+    					per=per+percola(red, mass, n, s, i, l);
 						//printf("%d\n%g\n",per,prob);
 						}
 
 					perproba[j]=per/l;
-				        		
+					if (s==1) 
+					{
+						masa[j]=average(mass,l);
+				    }    		
 				}
-
+				
 				perprobap[k]=average(perproba,z);
-				arrayp[k] = perprobap[b++];
+				arrayp[k]=perprobap[b++];
+				if (s==1)
+				{
+					masap[k]=average(masa, z);
+					arraymp[k]=masap[y++];
+					printf("p=%g pp=%g mass=%g\n" , prob, arrayp[k], arraymp[k]);
+					fprintf(fp, "%f %f %f\n", arrayp[k], arraymp[k], prob);
+				}
+				else
+				{
 				printf("p=%g pp=%g\n" , prob, arrayp[k]);
 				fprintf(fp, "%f %f\n", arrayp[k], prob);
+				}
 			}
 	
 
@@ -91,6 +114,7 @@ int  main()
 	}
 	else
 	{
+		s=0;
 		printf("How many iterations lvl 3?(#probabilities untill finish)   ");
 		scanf("%d", &r);
 		FILE *fp;
@@ -127,7 +151,7 @@ int  main()
 						hoshen(red,clase,n);
 						//imprimir(red,clase,n);
     		
-    					per=per+percola(red,n);
+    					per=per+percola(red, mass, n, s, i, l);
 						//printf("%d\n%g\n",per,prob);
 						}
 
@@ -288,19 +312,22 @@ int   actualizar(int *sitio,int *clase,int s,int frag)
    return(frag);
 }
 
-int   percola(int *red,int n)
+
+int   percola(int *red,float *mass, int n, int s, int v, int l)
 {
 	int i;
-	int j;
+	int j,k,count;
 	int per;
 	int a;
 	int b;
 	int c;
+	count=0;
 	per=0;
 	c=0;
-	
-	while(c==0)
+
+	if(s==1)
 	{
+		
 		for(i=0;i<n;i++)
 		{
 			if(red[i]>0)
@@ -311,8 +338,21 @@ int   percola(int *red,int n)
 						b=red[n*(n-1)+j];
 						if(a==b)
 						{
-							per=1;
-							c=2;
+							for(k=0;k<n*n;k++)
+							{	
+								if(red[k]==a)
+								{
+									count=count+1;
+
+								}
+								else
+								{
+									count=count;
+								}
+
+							}
+								per=1;
+								
 						}
 						else
 						{
@@ -320,10 +360,45 @@ int   percola(int *red,int n)
 						}
 					}
 			}
-		c=2;
+			
 		}
+
+		mass[v]= sqrt(count);
+
+		
+	return(per);
 	}
-return(per);
+	else
+	{
+		while(c==0)
+		{
+			for(i=0;i<n;i++)
+			{
+				if(red[i]>0)
+				{
+					a=red[i];
+						for(j=0;j<n;j++)
+						{
+							b=red[n*(n-1)+j];
+							if(a==b)
+							{
+								per=1;
+								c=2;
+							}
+							else
+							{
+								per=per;
+							}
+						}
+				}
+			c=2;
+			}
+		}
+	return(per);
+	
+	}
+
+
 }
 
 void  etiqueta_falsa(int *red,int *clase,int s1,int s2,int frag)
