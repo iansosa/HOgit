@@ -48,6 +48,9 @@ int  main()
 		float arrayp[h];
 		//printf("Enter proba:   ");
 		//scanf("%g", &prob);
+		FILE *fp;
+
+		fp = fopen("Probabilidad de percolacion vs Probabilidad p.txt", "a");
 
 
 			for(k = 0;k <= h; k++)
@@ -76,17 +79,23 @@ int  main()
 				        		
 				}
 
-				printf("\n%g\n" , average(perproba,z));
 				perprobap[k]=average(perproba,z);
 				arrayp[k] = perprobap[b++];
 				printf("p=%g pp=%g\n" , prob, arrayp[k]);
-				}
-			
+				fprintf(fp, "%f %f\n", arrayp[k], prob);
+			}
+	
+
+
+
 	}
 	else
 	{
 		printf("How many iterations lvl 3?(#probabilities untill finish)   ");
 		scanf("%d", &r);
+		FILE *fp;
+
+		fp = fopen("Probabilidades p con PP=0.5.txt", "a");
 				
 		perproba=(float *)malloc(z*sizeof(float));
 		perprobap=(float *)malloc(r*sizeof(float));
@@ -139,12 +148,14 @@ int  main()
 				pc[k]=prob;
 				array[k] = pc[b++];
         		printf("%g\n" , array[k]);
+        		fprintf(fp, "%f\n", array[k]);
 			}
 					
 		 printf("\n%g\n" , average(pc,r));				
 
 	}
-			
+	
+	
 			
 		
 			
