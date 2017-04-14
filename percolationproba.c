@@ -18,68 +18,130 @@ float average(float *pc,int z);
 int  main()
 {
 	float per;
-	int n, i, j, z, l, k, h,b;
+	int n, i, j, z, l, k, h, b, d, q, r;
 	int *red;
 	float *perproba, *perprobap;
 	float prob, c;
 	int *clase;
 	n=30;
 	b=0;
+	q=2.0;
 	
 	red=(int *)malloc(n*n*sizeof(int));
 	clase=(int *)malloc(n*n*sizeof(int));
 
 
-	printf("How many iterations level 1?   ");
+	printf("How many iterations level 1?(#matrixes)   ");
 	scanf("%d", &l);
-	printf("How many iterations level 2?   ");
+	printf("How many iterations level 2?(#averages of diferent seeds)   ");
 	scanf("%d", &z);
-	printf("What's the resolution of p?   ");
-	scanf("%g", &c);
-	perproba=(float *)malloc(z*sizeof(float));
-	prob=0;
-	h=ceil(1.0/c);
-	perprobap=(float *)malloc(h*sizeof(float));
-	float arrayp[h];
-	
+	printf("Want to converge on pp=0.5?(1 for yes)   ");
+	scanf(" %d", &d);
+	if(d!=1)
+	{
+		printf("What's the resolution of p?   ");
+		scanf("%g", &c);
+		perproba=(float *)malloc(z*sizeof(float));
+		prob=0;
+		h=ceil(1.0/c);
+		perprobap=(float *)malloc(h*sizeof(float));
+		float arrayp[h];
+		//printf("Enter proba:   ");
+		//scanf("%g", &prob);
 
 
-	//printf("Enter proba:   ");
-	//scanf("%g", &prob);
-
-		for(k = 0;k <= h; k++)
-		{
-			prob=0.0 + c*k;
-	
-			for(j = 0;j < z; j++)
+			for(k = 0;k <= h; k++)
 			{
-
-				per=0.0;
-				
-				srand(time(NULL) + j);
-
-					for(i = 0;i < l; i++)
-					{
-
-					llenar(red,n,prob);
-					hoshen(red,clase,n);
-					//imprimir(red,clase,n);
-    		
-    				per=per+percola(red,n);
-					//printf("%d\n%g\n",per,prob);
-					}
-
-				perproba[j]=per/l;
-				        		
-			}
-
-			printf("\n%g\n" , average(perproba,z));
-			perprobap[k]=average(perproba,z);
-			arrayp[k] = perprobap[b++];
-			printf("p=%g pp=%g\n" , prob, arrayp[k]);
-
-		}
+				prob=0.0 + c*k;
 	
+				for(j = 0;j < z; j++)
+				{
+
+					per=0.0;
+				
+					srand(time(NULL) + j);
+
+						for(i = 0;i < l; i++)
+						{
+
+						llenar(red,n,prob);
+						hoshen(red,clase,n);
+						//imprimir(red,clase,n);
+    		
+    					per=per+percola(red,n);
+						//printf("%d\n%g\n",per,prob);
+						}
+
+					perproba[j]=per/l;
+				        		
+				}
+
+				printf("\n%g\n" , average(perproba,z));
+				perprobap[k]=average(perproba,z);
+				arrayp[k] = perprobap[b++];
+				printf("p=%g pp=%g\n" , prob, arrayp[k]);
+				}
+			
+	}
+	else
+	{
+		printf("How many iterations level 3?(#probabilities untill finish)   ");
+		scanf("%d", &r);
+		
+		perproba=(float *)malloc(z*sizeof(float));
+		prob=0;
+		perprobap=(float *)malloc(r*sizeof(float));
+		float arrayp[r];
+		//printf("Enter proba:   ");
+		//scanf("%g", &prob);
+
+		prob=0.5;
+
+			for(k = 0;k <= r; k++)
+			{
+				
+	
+				for(j = 0;j < z; j++)
+				{
+
+					per=0.0;
+				
+					srand(time(NULL) + j);
+
+						for(i = 0;i < l; i++)
+						{
+
+						llenar(red,n,prob);
+						hoshen(red,clase,n);
+						//imprimir(red,clase,n);
+    		
+    					per=per+percola(red,n);
+						//printf("%d\n%g\n",per,prob);
+						}
+
+					perproba[j]=per/l;
+				        		
+				}
+
+				perprobap[k]=average(perproba,z);
+				arrayp[k] = perprobap[b++];
+				printf("p=%g pp=%g\n" , prob, arrayp[k]);
+				q=1.5*q;
+
+				if (average(perproba,z) <= 0.5)
+				{ 
+					prob+=(1.0/q);
+				} 
+            	else
+            	{
+            		prob+=(-1.0/q);
+            	}
+            	
+
+			}
+			
+	}
+		
 	
 
   free(red);
