@@ -18,9 +18,9 @@ float average(float *pc,int z);
 int  main()
 {
 	float per;
-	int n, i, j, z, l, k, h, b, d, q, r;
+	int n, i, j, z, l, k, h, b, d, r;
 	int *red;
-	float *perproba, *perprobap;
+	float *perproba, *perprobap, *pc, q;
 	float prob, c;
 	int *clase;
 	n=30;
@@ -31,9 +31,9 @@ int  main()
 	clase=(int *)malloc(n*n*sizeof(int));
 
 
-	printf("How many iterations level 1?(#matrixes)   ");
+	printf("How many iterations lvl 1?(#matrixes)   ");
 	scanf("%d", &l);
-	printf("How many iterations level 2?(#averages of diferent seeds)   ");
+	printf("How many iterations lvl 2?(#averages of diferent seeds)   ");
 	scanf("%d", &z);
 	printf("Want to converge on pp=0.5?(1 for yes)   ");
 	scanf(" %d", &d);
@@ -85,28 +85,31 @@ int  main()
 	}
 	else
 	{
-		printf("How many iterations level 3?(#probabilities untill finish)   ");
+		printf("How many iterations lvl 3?(#probabilities untill finish)   ");
 		scanf("%d", &r);
-		
+				
 		perproba=(float *)malloc(z*sizeof(float));
-		prob=0;
 		perprobap=(float *)malloc(r*sizeof(float));
-		float arrayp[r];
+		pc=(float *)malloc(r*sizeof(float));
+		float array[r];
 		//printf("Enter proba:   ");
 		//scanf("%g", &prob);
 
-		prob=0.5;
+			
 
 			for(k = 0;k <= r; k++)
 			{
 				
+				prob=1;
+				q=2.0;
 	
 				for(j = 0;j < z; j++)
 				{
 
 					per=0.0;
+					
 				
-					srand(time(NULL) + j);
+					srand(time(NULL) + j + k*z);
 
 						for(i = 0;i < l; i++)
 						{
@@ -120,33 +123,38 @@ int  main()
 						}
 
 					perproba[j]=per/l;
-				        		
+				       q=2.0*q;
+
+					if (perproba[j] <= 0.5)
+					{ 
+						prob+=(1.0/q);
+					} 
+            		else
+            		{
+            			prob+=(-1.0/q);
+            		}
+            	
 				}
 
-				perprobap[k]=average(perproba,z);
-				arrayp[k] = perprobap[b++];
-				printf("p=%g pp=%g\n" , prob, arrayp[k]);
-				q=1.5*q;
-
-				if (average(perproba,z) <= 0.5)
-				{ 
-					prob+=(1.0/q);
-				} 
-            	else
-            	{
-            		prob+=(-1.0/q);
-            	}
-            	
-
+				pc[k]=prob;
+				array[k] = pc[b++];
+        		printf("%g\n" , array[k]);
 			}
-			
+					
+		 printf("\n%g\n" , average(pc,r));				
+
 	}
+			
+			
+		
+			
+
 		
 	
 
-  free(red);
+//  free(red);
 
-  return 0;
+return (0);
 }
 
 void  llenar(int *red,int n,float prob){
