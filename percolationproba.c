@@ -30,6 +30,7 @@ int  main()
 	q=2.0;
 	q1=0;
 	
+	
 	red=(int *)malloc(n*n*sizeof(int));
 	clase=(int *)malloc(n*n*sizeof(int));
 	
@@ -101,7 +102,7 @@ int  main()
 				if (s==1)
 				{
 					masap[k]=average(masa, z)/(n*n);
-					sigma[k]=sigm(masa, average(masa, z), z)/(n*n);
+					sigma[k]=sqrt(sigm(masa, average(masa, z), z)/(n*n));
 					arraymp[k]=masap[y++];
 					arraysp[k]=sigma[q1++];
 					printf("p=%g pp=%g density=%g\n sigma=%g\n" , prob, arrayp[k], arraymp[k], arraysp[k]);
@@ -131,6 +132,7 @@ int  main()
 		perprobap=(float *)malloc(r*sizeof(float));
 		pc=(float *)malloc(r*sizeof(float));
 		float array[r];
+
 		//printf("Enter proba:   ");
 		//scanf("%g", &prob);
 
@@ -205,13 +207,13 @@ void  llenar(int *red,int n,float prob){
 	float b;
 	float c;
 
-	c = prob * 1000;
+	c = prob * 100000;
 	
 
 	for(i = 0; i < n*n; i++){
 
 		b=0;
-		a= rand() % 1000;
+		a= rand() % 100000;
 
 			if(a>=c)
 			{

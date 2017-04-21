@@ -13,6 +13,7 @@ int   actualizar(int *red,int *clase,int s,int frag);
 int   hoshen(int *red,int *clase,int n);
 int   percola(int *red,int n);
 float average(float *pc,int z);
+float sigm(float *pc,float s,int r);
 
 
 int  main()
@@ -28,6 +29,7 @@ int  main()
 	
 	red=(int *)malloc(n*n*sizeof(int));
 	clase=(int *)malloc(n*n*sizeof(int));
+
 
 	printf("How many iterations?   ");
 	scanf("%d", &z);
@@ -87,13 +89,13 @@ void  llenar(int *red,int n,float prob){
 	float b;
 	float c;
 
-	c = prob * 1000;
+	c = prob * 100000;
 	
 
 	for(i = 0; i < n*n; i++){
 
 		b=0;
-		a= rand() % 1000;
+		a= rand() % 100000;
 
 			if(a>=c)
 			{
@@ -171,6 +173,22 @@ int hoshen(int *red,int *clase, int n)
   return 0;
 }
 
+float sigm(float *p,float s,int r)
+{
+	int i;
+	float o;
+	float sig;
+	o=0.0;
+	for(i=0;i<r;i++)
+	{
+		o=o+p[i]*p[i];
+	}
+	
+	sig=(o/r)-s*s;
+
+return(sig);
+
+}
 
 int   actualizar(int *sitio,int *clase,int s,int frag)
 {

@@ -150,13 +150,13 @@ void  llenar(int *red,int n,float prob){
 	float b;
 	float c;
 
-	c = prob * 1000;
+	c = prob * 100000;
 	
 
 	for(i = 0; i < n*n; i++){
 
 		b=0;
-		a= rand() % 1000;
+		a= rand() % 100000;
 
 			if(a>=c)
 			{
