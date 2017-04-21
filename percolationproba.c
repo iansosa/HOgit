@@ -11,6 +11,7 @@ void  etiqueta_falsa(int *red,int *clase,int s1,int s2,int frag);
 void  corregir_etiqueta(int *red,int *clase,int n);
 int   actualizar(int *red,int *clase,int s,int frag);
 int   hoshen(int *red,int *clase,int n);
+float sigm(float *masa,float s,int r);
 int   percola(int *red,float *mass,int n, int s, int i,int l);
 float average(float *pc,int z);
 
@@ -18,15 +19,16 @@ float average(float *pc,int z);
 int  main()
 {
 	float per;
-	int n, i, j, z, l, k, h, b, d, r, s, y;
+	int n, i, j, z, l, k, h, b, d, r, s, y, q1;
 	int *red;
-	float *perproba, *perprobap, *masa, *masap, *pc, q, *mass;
+	float *perproba, *perprobap, *masa, *sigma, *masap, *pc, q, *mass;
 	float prob, c;
 	int *clase;
 	y=0;
 	n=30;
 	b=0;
 	q=2.0;
+	q1=0;
 	
 	red=(int *)malloc(n*n*sizeof(int));
 	clase=(int *)malloc(n*n*sizeof(int));
@@ -54,8 +56,10 @@ int  main()
 		h=ceil(1.0/c);
 		perprobap=(float *)malloc(h*sizeof(float));
 		masap=(float *)malloc(h*sizeof(float));
+		sigma=(float *)malloc(h*sizeof(float));
 		float arrayp[h];
 		float arraymp[h];
+		float arraysp[h];
 		//printf("Enter proba:   ");
 		//scanf("%g", &prob);
 		FILE *fp;
@@ -89,17 +93,19 @@ int  main()
 					if (s==1) 
 					{
 						masa[j]=average(mass,l);
-				    }    		
+				    	}    		
 				}
 				
 				perprobap[k]=average(perproba,z);
 				arrayp[k]=perprobap[b++];
 				if (s==1)
 				{
-					masap[k]=average(masa, z);
+					masap[k]=average(masa, z)/(n*n);
+					sigma[k]=sigm(masa, average(masa, z), z)/(n*n);
 					arraymp[k]=masap[y++];
-					printf("p=%g pp=%g mass=%g\n" , prob, arrayp[k], arraymp[k]);
-					fprintf(fp, "%f %f %f\n", arrayp[k], arraymp[k], prob);
+					arraysp[k]=sigma[q1++];
+					printf("p=%g pp=%g density=%g\n sigma=%g\n" , prob, arrayp[k], arraymp[k], arraysp[k]);
+					fprintf(fp, "%f %f %f %f\n", arrayp[k], arraymp[k], arraysp[k], prob);
 				}
 				else
 				{
@@ -453,6 +459,22 @@ float average(float *pc,int z)
 return(avg/z);
 }
 
+float sigm(float *p,float s,int r)
+{
+	int i;
+	float o;
+	float sig;
+	o=0.0;
+	for(i=0;i<r;i++)
+	{
+		o=o+p[i]*p[i];
+	}
+	
+	sig=(o/r)-s*s;
+
+return(sig);
+
+}
 void imprimir(int *red,int *clase,int n){    //print del vector clase comentado
 
 	int i,j;
