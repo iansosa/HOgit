@@ -13,7 +13,7 @@ int   actualizar(int *red,int *clase,int s,int frag);
 int   hoshen(int *red,int *clase,int n);
 int   percola(int *red,int n);
 float average(float *pc,int z);
-float sigm(float *pc,float s,int r);
+
 
 
 int  main()
@@ -35,6 +35,8 @@ int  main()
 	scanf("%d", &z);
 	float array[z];
 	pc=(float *)malloc(z*sizeof(float));
+	FILE *fp;
+	fp = fopen("Probabilidades p convergientes.txt", "a");
 
 
 	//printf("Enter proba:   ");
@@ -45,9 +47,7 @@ int  main()
 
 		prob=0.5;
 		d=2.0;
-		FILE *fp;
-
-		fp = fopen("Probabilidades p convergientes.txt", "a");
+		
 		
 		srand(time(NULL) + j);
  
@@ -72,7 +72,8 @@ int  main()
 			}
 		pc[j]=prob;
 		array[j] = pc[m++];
-        fprintf(fp, "%f\n", array[j]);
+		printf("%g %d\n" , array[j], j);
+        //fprintf(fp, "%f\n", array[j]);
 		}
 	
 	printf("\n%g\n" , average(pc,z));
@@ -167,28 +168,13 @@ int hoshen(int *red,int *clase, int n)
 	}
 
   corregir_etiqueta(red,clase,n);
-/*
-  free(clase);
-*/
+
+  //free(clase);
+
   return 0;
 }
 
-float sigm(float *p,float s,int r)
-{
-	int i;
-	float o;
-	float sig;
-	o=0.0;
-	for(i=0;i<r;i++)
-	{
-		o=o+p[i]*p[i];
-	}
-	
-	sig=(o/r)-s*s;
 
-return(sig);
-
-}
 
 int   actualizar(int *sitio,int *clase,int s,int frag)
 {
