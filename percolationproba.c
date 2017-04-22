@@ -19,16 +19,17 @@ float average(float *pc,int z);
 int  main()
 {
 	float per;
-	int n, i, j, z, l, k, h, b, d, r, s, y, q1;
+	int n, i, j, z, l, k, h, b, d, r, s, y, q1, q2;
 	int *red;
-	float *perproba, *perprobap, *masa, *sigma, *masap, *pc, q, *mass;
+	float *perproba, *perprobap, *masa, *sigmam, *sigmap, *masap, *pc, q, *mass;
 	float prob, c;
 	int *clase;
 	y=0;
-	n=30;
+	n=32;
 	b=0;
 	q=2.0;
 	q1=0;
+	q2=0;
 	
 	
 	red=(int *)malloc(n*n*sizeof(int));
@@ -57,9 +58,11 @@ int  main()
 		h=ceil(1.0/c);
 		perprobap=(float *)malloc(h*sizeof(float));
 		masap=(float *)malloc(h*sizeof(float));
-		sigma=(float *)malloc(h*sizeof(float));
+		sigmam=(float *)malloc(h*sizeof(float));
+		sigmap=(float *)malloc(h*sizeof(float));
 		float arrayp[h];
 		float arraymp[h];
+		float arraysm[h];
 		float arraysp[h];
 		//printf("Enter proba:   ");
 		//scanf("%g", &prob);
@@ -99,19 +102,21 @@ int  main()
 				
 				perprobap[k]=average(perproba,z);
 				arrayp[k]=perprobap[b++];
+				sigmap[k]=sqrt(sigm(perproba, average(perproba, z), z));
+				arraysp[k]=sigmap[q2++];
 				if (s==1)
 				{
 					masap[k]=average(masa, z)/(n*n);
-					sigma[k]=sqrt(sigm(masa, average(masa, z), z)/(n*n));
+					sigmam[k]=sqrt(sigm(masa, average(masa, z), z)/(n*n));
 					arraymp[k]=masap[y++];
-					arraysp[k]=sigma[q1++];
-					printf("p=%g pp=%g density=%g\n sigma=%g\n" , prob, arrayp[k], arraymp[k], arraysp[k]);
-					fprintf(fp, "%f %f %f %f\n", arrayp[k], arraymp[k], arraysp[k], prob);
+					arraysm[k]=sigmam[q1++];
+					printf("p=%g pp=%g density=%g sigmap=%g sigmam=%g\n" , prob, arrayp[k], arraymp[k], arraysp[k], arraysm[k]);
+					fprintf(fp, "%f %f %f %f %f\n", arrayp[k], arraymp[k], arraysp[k], arraysm[k], prob);
 				}
 				else
 				{
-				printf("p=%g pp=%g\n" , prob, arrayp[k]);
-				fprintf(fp, "%f %f\n", arrayp[k], prob);
+				printf("p=%g pp=%g sigmap=%g\n" , prob, arrayp[k], arraysp[k]);
+				fprintf(fp, "%f %f %f\n", arrayp[k], arraysp[k], prob);
 				}
 			}
 	

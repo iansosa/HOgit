@@ -24,7 +24,7 @@ int  main()
 	float *pc;
 	float prob, d;
 	int *clase;
-	n=30;
+	n=128;
 	m=0;
 	
 	red=(int *)malloc(n*n*sizeof(int));
@@ -73,7 +73,7 @@ int  main()
 		pc[j]=prob;
 		array[j] = pc[m++];
 		printf("%g %d\n" , array[j], j);
-        //fprintf(fp, "%f\n", array[j]);
+        fprintf(fp, "%f\n", array[j]);
 		}
 	
 	printf("\n%g\n" , average(pc,z));

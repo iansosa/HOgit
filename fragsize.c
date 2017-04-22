@@ -265,7 +265,7 @@ int   actualizar(int *sitio,int *clase,int s,int frag)
 
 void   percola(int *red,int n, float *size)
 {
-	int i, j,k, a, b, o, t, v, count;
+	int i, j,k, a, a1, a2, b, o, t, v, count, i1, i2, i3;
 	
 	
 	int *smart, *ssize;
@@ -282,9 +282,30 @@ void   percola(int *red,int n, float *size)
 			v=red[k];
 			smart[v]=v;
 		}		
+
+		for(i1=0;i1<n;i1++)
+		{
+			if(red[i1]>0)
+			{
+				a1=red[i1];
+					for(i2=0;i2<n;i2++)
+					{
+						a2=red[n*(n-1)+i2];
+						if(a1==a2)
+						{
+							smart[a1]=0;								
+						}
+
+					}
+			}
+			
+		}
+
+
 		for(i=0;i<n*n;i++)
 		{
 			count=0;
+
 			if(smart[i]>0)
 			{
 				a=smart[i];
